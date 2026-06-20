@@ -4,87 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Tecnologia DC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        header{background:#0d6efd;color:#fff;padding:20px 0}
+        section{padding:30px 0;border-bottom:1px solid #ddd}
+        section:last-child{border-bottom:none}
+        aside{background:#e9ecef;padding:15px;border-radius:8px;margin:20px 0}
+        footer{background:#0d6efd;color:#fff;text-align:center;padding:15px 0;margin-top:20px}
+        @media(max-width:576px){header h1{font-size:1.5rem}}
+    </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <h1>Tienda de Tecnologia DC</h1>
-    </header>
+<header class="text-center"><div class="container"><h1>Tienda de Tecnologia DC</h1><p>Sistema para la venta de componentes de PC</p></div></header>
 
-    <!-- Nav - Menu de navegacion -->
-    <nav>
-        <a href="#inicio">Inicio</a> |
-        <a href="#quienes-somos">Quienes Somos</a> |
-        <a href="#servicios">Servicios</a> |
-        <a href="#contacto">Contacto</a>
-    </nav>
-
-    <!-- Main -->
-    <main>
-
-        <!-- Seccion Inicio -->
-        <section id="inicio">
-            <h2>Inicio</h2>
-            <p>Bienvenidos a Tienda de Tecnologia DC. Este es un sistema para la venta y administracion de componentes de computadoras. Ofrecemos productos de calidad para armar tu PC.</p>
-        </section>
-
-        <!-- Seccion Quienes Somos -->
-        <section id="quienes-somos">
-            <h2>Quienes Somos</h2>
-            <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, un par de estudiantes apasionados por la tecnologia y los computadores. Nuestro objetivo es ofrecer componentes de computadora de buena calidad a precios accesibles para todas las personas. Comenzamos este proyecto como una tienda pequena en redes sociales y poco a poco hemos ido creciendo. Actualmente vendemos procesadores, tarjetas graficas, memorias RAM, discos duros, fuentes de poder, perifericos y todo lo necesario para armar una computadora desde cero.</p>
-            <p>Nos enfocamos en brindar atencion personalizada a cada cliente, ayudandoles a elegir los mejores componentes segun su presupuesto y necesidades. Creemos que la tecnologia debe ser accesible para todos, por eso ofrecemos productos para computadoras de oficina, gaming y trabajo profesional. Tambien damos consejos y guias para que las personas aprendan a armar sus propias PCs. Nuestro compromiso es con la honestidad y la calidad, y trabajamos cada dia para mejorar nuestro catalogo y servicio. Esperamos que nos visites y seas parte de nuestra comunidad tecnologica.</p>
-            <img src="https://www.channelbiz.es/wp-content/uploads/2017/03/PcComponentes-Madrid.jpg" alt="Componentes de computadora" width="500">
-        </section>
-
-        <!-- Seccion Servicios o Productos -->
-        <section id="servicios">
-            <h2>Servicios y Productos</h2>
-            <ul>
-                <li>Venta de procesadores Intel y AMD</li>
-                <li>Venta de tarjetas graficas NVIDIA y AMD</li>
-                <li>Venta de memorias RAM DDR4 y DDR5</li>
-                <li>Venta de discos SSD y HDD</li>
-                <li>Venta de fuentes de poder</li>
-                <li>Venta de gabinetes para PC</li>
-                <li>Asesoria para armar tu computadora</li>
-                <li>Mantenimiento y reparacion de equipos</li>
-                <li>Perifericos (Mouse, Teclados mecanicos, Audifonos, etc)</li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Tienda DC</a>
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#quienes">Quienes Somos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
             </ul>
-        </section>
+        </div>
+    </div>
+</nav>
 
-        <!-- Seccion Contacto -->
-        <section id="contacto">
-            <h2>Contacto</h2>
-            <p>Email: ventas@tecnologiadc.com</p>
-            <p>Telefono: 0987654321, 0994960376</p>
-            <p>Direccion: Av. Amazonas N34-56, Quito, Ecuador</p>
-            <p>Redes sociales:</p>
-            <a href="#">Facebook</a> |
-            <a href="#">Instagram</a> |
-            <a href="#">Twitter</a>
+<main class="container">
 
-                        <!-- Video de YouTube -->
-            <h3>Video relacionado</h3>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/hKZMQVloVOM" title="video de tienda de computadoras servitotal" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <section id="inicio">
+        <h2 class="text-primary">Inicio</h2>
+        <div class="row align-items-center">
+            <div class="col-md-8"><p class="lead">Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
+                <a href="#servicios" class="btn btn-primary me-2">Ver productos</a><a href="#contacto" class="btn btn-outline-primary">Contactanos</a></div>
+            <div class="col-md-4"><div class="bg-primary text-white p-3 text-center rounded"><p class="mb-0">+50 clientes</p><p class="mb-0">100% original</p></div></div>
+        </div>
+    </section>
 
-    </main>
+    <section id="quienes">
+        <h2 class="text-primary">Quienes Somos</h2>
+        <div class="row">
+            <div class="col-md-7"><p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles. Vendemos procesadores, tarjetas graficas, memorias RAM, discos duros, fuentes de poder y todo lo necesario para armar una PC. Brindamos atencion personalizada para ayudar a elegir los mejores componentes segun el presupuesto y necesidades. Creemos que la tecnologia debe ser accesible para todos y trabajamos para ofrecer productos originales con garantia.</p></div>
+            <div class="col-md-5"><img src="https://www.channelbiz.es/wp-content/uploads/2017/03/PcComponentes-Madrid.jpg" alt="Componentes" class="img-fluid rounded"></div>
+        </div>
+    </section>
 
-    <!-- Aside - Informacion complementaria -->
-    <aside>
-        <h3>Informacion adicional</h3>
-        <p>Promocion: 10% de descuento en tu primera compra</p>
-        <p>Horario de atencion: Lunes a Sabado de 9am a 7pm</p>
-        <p>Envios a todo el pais</p>
-        <p>Garantia de 1 año en todos los productos</p>
-    </aside>
+    <section id="servicios">
+        <h2 class="text-primary">Servicios y Productos</h2>
+        <div class="row">
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Procesadores</h5><p class="small">Intel y AMD</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Tarjetas Graficas</h5><p class="small">NVIDIA y AMD</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Memorias RAM</h5><p class="small">DDR4 y DDR5</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Discos SSD/HDD</h5><p class="small">Almacenamiento</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Fuentes de Poder</h5><p class="small">500W a 850W</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Asesoria Tecnica</h5><p class="small">Armado de PC</p></div></div></div>
+        </div>
+    </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>Desarrollado por Danny Cambi y  Amy Pardo</p>
-        <p>Asignatura: Desarrollo de Aplicaciones Web (E)</p>
-        <p>Año: 2026</p>
-    </footer>
+    <section id="contacto">
+        <h2 class="text-primary">Contacto</h2>
+        <div class="row">
+            <div class="col-md-6"><div class="card"><div class="card-body"><h5>Envianos un mensaje</h5>
+                <form><div class="mb-2"><input type="text" class="form-control" placeholder="Nombre"></div>
+                <div class="mb-2"><input type="email" class="form-control" placeholder="Email"></div>
+                <div class="mb-2"><input type="text" class="form-control" placeholder="Asunto"></div>
+                <div class="mb-2"><textarea class="form-control" rows="3" placeholder="Mensaje"></textarea></div>
+                <button type="submit" class="btn btn-primary w-100">Enviar</button></form>
+            </div></div></div>
+            <div class="col-md-6"><div class="card"><div class="card-body"><h5>Datos de contacto</h5>
+                <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
+                <p><strong>Telefono:</strong> 0987654321</p>
+                <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
+                <a href="#" class="btn btn-primary btn-sm">Facebook</a>
+                <a href="#" class="btn btn-danger btn-sm">Instagram</a>
+                <a href="#" class="btn btn-info btn-sm text-white">Twitter</a>
+                <hr>
+                <div class="ratio ratio-16x9"><iframe src="https://www.youtube.com/embed/hKZMQVloVOM" allowfullscreen></iframe></div>
+            </div></div></div>
+        </div>
+    </section>
 
+</main>
+
+<aside class="container"><div class="row text-center"><div class="col-6 col-md-3"><h6>Promociones</h6><p class="small">10% de descuento</p></div><div class="col-6 col-md-3"><h6>Horarios</h6><p class="small">Lun-Sab 9am-7pm</p></div><div class="col-6 col-md-3"><h6>Envios</h6><p class="small">A todo el pais</p></div><div class="col-6 col-md-3"><h6>Garantia</h6><p class="small">1 año</p></div></div></aside>
+
+<footer><div class="container"><p class="mb-0">Desarrollado por Danny Cambi y Amy Pardo</p><p>Desarrollo de Aplicaciones Web (E) - 2026</p></div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
