@@ -19,46 +19,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let total = 0;
 
-    function val(campo, error, ok, condicion) {
-        if (condicion) {
-            campo.classList.remove('is-invalid');
-            campo.classList.add('is-valid');
-            error.style.display = 'none';
-            if (ok) ok.style.display = 'block';
+    function validarNombre() {
+        const valor = n.value.trim();
+        if (valor.length >= 3) {
+            n.classList.remove('is-invalid');
+            n.classList.add('is-valid');
+            errN.style.display = 'none';
+            okN.style.display = 'block';
             return true;
         } else {
-            campo.classList.remove('is-valid');
-            campo.classList.add('is-invalid');
-            error.style.display = 'block';
-            if (ok) ok.style.display = 'none';
+            n.classList.remove('is-valid');
+            n.classList.add('is-invalid');
+            errN.style.display = 'block';
+            okN.style.display = 'none';
             return false;
         }
     }
 
-    function validarNombre() {
-        return val(n, errN, okN, n.value.trim().length >= 3);
-    }
     function validarCategoria() {
-        return val(c, errC, okC, c.value !== '');
+        if (c.value !== '') {
+            c.classList.remove('is-invalid');
+            c.classList.add('is-valid');
+            errC.style.display = 'none';
+            okC.style.display = 'block';
+            return true;
+        } else {
+            c.classList.remove('is-valid');
+            c.classList.add('is-invalid');
+            errC.style.display = 'block';
+            okC.style.display = 'none';
+            return false;
+        }
     }
+
     function validarPrecio() {
-        return val(p, errP, okP, p.value === '' || parseFloat(p.value) >= 0);
+        if (p.value === '' || parseFloat(p.value) >= 0) {
+            p.classList.remove('is-invalid');
+            p.classList.add('is-valid');
+            errP.style.display = 'none';
+            okP.style.display = 'block';
+            return true;
+        } else {
+            p.classList.remove('is-valid');
+            p.classList.add('is-invalid');
+            errP.style.display = 'block';
+            okP.style.display = 'none';
+            return false;
+        }
     }
+
     function validarDescripcion() {
-        return val(d, errD, okD, d.value.trim().length >= 10);
+        const valor = d.value.trim();
+        if (valor.length >= 10) {
+            d.classList.remove('is-invalid');
+            d.classList.add('is-valid');
+            errD.style.display = 'none';
+            okD.style.display = 'block';
+            return true;
+        } else {
+            d.classList.remove('is-valid');
+            d.classList.add('is-invalid');
+            errD.style.display = 'block';
+            okD.style.display = 'none';
+            return false;
+        }
     }
+
     function validarTodo() {
         return validarNombre() && validarCategoria() && validarPrecio() && validarDescripcion();
     }
 
-    function act() {
+    function actualizarContador() {
         contador.textContent = total;
         if (total === 0) {
             if (!document.getElementById('vacio')) {
                 let p = document.createElement('p');
                 p.id = 'vacio';
                 p.className = 'text-muted text-center';
-                p.textContent = 'No hay productos';
+                p.textContent = 'No hay productos registrados';
                 lista.appendChild(p);
             }
         } else {
@@ -67,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function crear(nom, cat, pre, des) {
+    function crearProducto(nombre, categoria, precio, descripcion) {
         let col = document.createElement('div');
         col.className = 'col-md-4 col-sm-6 mb-3';
         let card = document.createElement('div');
@@ -76,18 +114,22 @@ document.addEventListener('DOMContentLoaded', function() {
         body.className = 'card-body';
         let h5 = document.createElement('h5');
         h5.className = 'card-title text-primary';
-        h5.textContent = nom;
+        h5.textContent = nombre;
         let info = document.createElement('p');
         info.className = 'card-text small';
-        info.innerHTML = '<strong>Categoria:</strong> ' + cat + '<br><strong>Descripcion:</strong> ' + des;
+        info.innerHTML = '<strong>Categoria:</strong> ' + categoria + '<br><strong>Descripcion:</strong> ' + descripcion;
         let prec = document.createElement('p');
         prec.className = 'card-text';
-        prec.textContent = pre > 0 ? 'Precio: $' + parseFloat(pre).toFixed(2) : 'Precio: N/E';
+        prec.textContent = precio > 0 ? 'Precio: $' + parseFloat(precio).toFixed(2) : 'Precio: No especificado';
         let btn = document.createElement('button');
         btn.className = 'btn btn-danger btn-sm mt-2';
         btn.textContent = 'Eliminar';
         btn.addEventListener('click', function() {
-            if (confirm('Eliminar "' + nom + '"?')) { col.remove(); total--; act(); }
+            if (confirm('¿Eliminar "' + nombre + '"?')) {
+                col.remove();
+                total--;
+                actualizarContador();
+            }
         });
         body.appendChild(h5);
         body.appendChild(info);
@@ -112,14 +154,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!validarTodo()) {
             let alerta = document.createElement('div');
             alerta.className = 'alert alert-danger';
-            alerta.textContent = 'Corrige los errores';
+            alerta.textContent = 'Corrige los errores antes de registrar';
             form.prepend(alerta);
             setTimeout(function() { alerta.remove(); }, 3000);
             return;
         }
-        lista.appendChild(crear(n.value.trim(), c.value, parseFloat(p.value) || 0, d.value.trim()));
+        lista.appendChild(crearProducto(n.value.trim(), c.value, parseFloat(p.value) || 0, d.value.trim()));
         total++;
-        act();
+        actualizarContador();
         mensajeExito.style.display = 'block';
         setTimeout(function() { mensajeExito.style.display = 'none'; }, 3000);
         form.reset();
@@ -129,5 +171,5 @@ document.addEventListener('DOMContentLoaded', function() {
         n.focus();
     });
 
-    act();
+    actualizarContador();
 });
