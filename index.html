@@ -11,8 +11,8 @@
         section:last-child{border-bottom:none}
         aside{background:#e9ecef;padding:15px;border-radius:8px;margin:20px 0}
         footer{background:#0d6efd;color:#fff;text-align:center;padding:15px 0;margin-top:20px}
-        .producto-item:hover{background-color:#f8f9fa}
-        .error-msg{color:#dc3545;font-size:0.85rem;display:none}
+        .error-msg{color:#dc3545;font-size:0.85rem;display:none;margin-top:5px}
+        .success-msg{color:#198754;font-size:0.85rem;display:none;margin-top:5px}
         @media(max-width:576px){header h1{font-size:1.5rem}}
     </style>
 </head>
@@ -47,53 +47,40 @@
 
     <section id="inicio">
         <h2 class="text-primary">Inicio</h2>
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <p class="lead">Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
-                <a href="#productos" class="btn btn-primary me-2">Registrar Producto</a>
-                <a href="#contacto" class="btn btn-outline-primary">Contactanos</a>
-            </div>
-            <div class="col-md-4">
-                <div class="bg-primary text-white p-3 text-center rounded">
-                    <p class="mb-0">+50 clientes</p>
-                    <p class="mb-0">100% original</p>
-                </div>
-            </div>
-        </div>
+        <p>Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
+        <a href="#productos" class="btn btn-primary">Registrar Producto</a>
     </section>
 
     <section id="quienes">
         <h2 class="text-primary">Quienes Somos</h2>
-        <div class="row">
-            <div class="col-md-7">
-                <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles. Vendemos procesadores, tarjetas graficas, memorias RAM, discos duros, fuentes de poder y todo lo necesario para armar una PC. Brindamos atencion personalizada para ayudar a elegir los mejores componentes segun el presupuesto y necesidades. Creemos que la tecnologia debe ser accesible para todos y trabajamos para ofrecer productos originales con garantia.</p>
-            </div>
-            <div class="col-md-5">
-                <img src="https://www.channelbiz.es/wp-content/uploads/2017/03/PcComponentes-Madrid.jpg" alt="Componentes" class="img-fluid rounded">
-            </div>
-        </div>
+        <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles. Vendemos procesadores, tarjetas graficas, memorias RAM, discos duros, fuentes de poder y todo lo necesario para armar una PC.</p>
+        <img src="https://www.channelbiz.es/wp-content/uploads/2017/03/PcComponentes-Madrid.jpg" alt="Componentes" class="img-fluid rounded" width="400">
     </section>
 
     <section id="servicios">
         <h2 class="text-primary">Servicios y Productos</h2>
-        <div class="row">
-            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Procesadores</h5><p class="small">Intel y AMD</p></div></div></div>
-            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Tarjetas Graficas</h5><p class="small">NVIDIA y AMD</p></div></div></div>
-            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Memorias RAM</h5><p class="small">DDR4 y DDR5</p></div></div></div>
-            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Discos SSD/HDD</h5><p class="small">Almacenamiento</p></div></div></div>
-            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Fuentes de Poder</h5><p class="small">500W a 850W</p></div></div></div>
-            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Asesoria Tecnica</h5><p class="small">Armado de PC</p></div></div></div>
-        </div>
+        <ul>
+            <li>Procesadores Intel y AMD</li>
+            <li>Tarjetas Graficas NVIDIA y AMD</li>
+            <li>Memorias RAM DDR4 y DDR5</li>
+            <li>Discos SSD y HDD</li>
+            <li>Fuentes de Poder</li>
+            <li>Asesoria Tecnica</li>
+        </ul>
     </section>
 
-    <!-- SECCION DINAMICA CON JAVASCRIPT -->
+    <!-- SECCION REGISTRAR PRODUCTO CON VALIDACIONES -->
     <section id="productos" class="bg-light p-4 rounded">
         <h2 class="text-primary">Registrar Producto</h2>
-        <form id="formProducto" class="row g-3">
+        
+        <div id="mensajeExito" class="alert alert-success" style="display:none">Producto registrado!</div>
+
+        <form id="formProducto" class="row g-3" novalidate>
             <div class="col-md-4">
                 <label class="form-label">Nombre *</label>
                 <input type="text" id="nombre" class="form-control" placeholder="Ej: RTX 4060">
-                <div class="error-msg" id="errNombre">El nombre es obligatorio</div>
+                <div class="error-msg" id="errNombre">Minimo 3 caracteres</div>
+                <div class="success-msg" id="okNombre">Valido</div>
             </div>
             <div class="col-md-4">
                 <label class="form-label">Categoria *</label>
@@ -103,14 +90,22 @@
                     <option value="Tarjeta Grafica">Tarjeta Grafica</option>
                     <option value="Memoria RAM">Memoria RAM</option>
                     <option value="Disco Duro">Disco Duro</option>
-                    <option value="Fuente">Fuente de Poder</option>
                     <option value="Otro">Otro</option>
                 </select>
                 <div class="error-msg" id="errCategoria">Selecciona una categoria</div>
+                <div class="success-msg" id="okCategoria">Valido</div>
             </div>
             <div class="col-md-4">
-                <label class="form-label">Precio (opcional)</label>
-                <input type="number" id="precio" class="form-control" placeholder="Ej: 250">
+                <label class="form-label">Precio</label>
+                <input type="number" id="precio" class="form-control" placeholder="Ej: 250" min="0">
+                <div class="error-msg" id="errPrecio">No puede ser negativo</div>
+                <div class="success-msg" id="okPrecio">Valido</div>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Descripcion *</label>
+                <textarea id="descripcion" class="form-control" rows="2" placeholder="Minimo 10 caracteres"></textarea>
+                <div class="error-msg" id="errDescripcion">Minimo 10 caracteres</div>
+                <div class="success-msg" id="okDescripcion">Valido</div>
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Agregar</button>
@@ -121,41 +116,22 @@
         <hr>
 
         <div class="d-flex justify-content-between">
-            <h5>Productos registrados</h5>
-            <span class="badge bg-primary" id="contador">0</span>
+            <h5>Productos (<span id="contador">0</span>)</h5>
         </div>
         <div id="listaProductos" class="row mt-3">
-            <p class="text-muted text-center" id="vacio">No hay productos registrados</p>
+            <p class="text-muted text-center" id="vacio">No hay productos</p>
         </div>
     </section>
 
     <section id="contacto">
         <h2 class="text-primary">Contacto</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card"><div class="card-body">
-                    <h5>Envianos un mensaje</h5>
-                    <form>
-                        <div class="mb-2"><input type="text" class="form-control" placeholder="Nombre"></div>
-                        <div class="mb-2"><input type="email" class="form-control" placeholder="Email"></div>
-                        <div class="mb-2"><input type="text" class="form-control" placeholder="Asunto"></div>
-                        <div class="mb-2"><textarea class="form-control" rows="3" placeholder="Mensaje"></textarea></div>
-                        <button type="submit" class="btn btn-primary w-100">Enviar</button>
-                    </form>
-                </div></div>
-            </div>
-            <div class="col-md-6">
-                <div class="card"><div class="card-body">
-                    <h5>Datos de contacto</h5>
-                    <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
-                    <p><strong>Telefono:</strong> 0987654321</p>
-                    <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
-                    <a href="#" class="btn btn-primary btn-sm">Facebook</a>
-                    <a href="#" class="btn btn-danger btn-sm">Instagram</a>
-                    <hr>
-                    <div class="ratio ratio-16x9"><iframe src="https://www.youtube.com/embed/hKZMQVloVOM" allowfullscreen></iframe></div>
-                </div></div>
-            </div>
+        <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
+        <p><strong>Telefono:</strong> 0987654321</p>
+        <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
+        <a href="#" class="btn btn-primary btn-sm">Facebook</a>
+        <a href="#" class="btn btn-danger btn-sm">Instagram</a>
+        <div class="ratio ratio-16x9 mt-3" style="max-width:560px">
+            <iframe src="https://www.youtube.com/embed/hKZMQVloVOM" allowfullscreen></iframe>
         </div>
     </section>
 
@@ -163,9 +139,9 @@
 
 <aside class="container">
     <div class="row text-center">
-        <div class="col-6 col-md-3"><h6>Promociones</h6><p class="small">10% de descuento</p></div>
+        <div class="col-6 col-md-3"><h6>Promociones</h6><p class="small">10% descuento</p></div>
         <div class="col-6 col-md-3"><h6>Horarios</h6><p class="small">Lun-Sab 9am-7pm</p></div>
-        <div class="col-6 col-md-3"><h6>Envios</h6><p class="small">A todo el pais</p></div>
+        <div class="col-6 col-md-3"><h6>Envios</h6><p class="small">Todo el pais</p></div>
         <div class="col-6 col-md-3"><h6>Garantia</h6><p class="small">1 año</p></div>
     </div>
 </aside>
