@@ -6,6 +6,7 @@
     <title>Tienda de Tecnologia DC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* ===== INICIO ESTILOS ===== */
         header{background:#0d6efd;color:#fff;padding:20px 0}
         section{padding:30px 0;border-bottom:1px solid #ddd}
         section:last-child{border-bottom:none}
@@ -13,11 +14,18 @@
         footer{background:#0d6efd;color:#fff;text-align:center;padding:15px 0;margin-top:20px}
         .error-msg{color:#dc3545;font-size:0.85rem;display:none;margin-top:5px}
         .success-msg{color:#198754;font-size:0.85rem;display:none;margin-top:5px}
+        .producto-card{transition:all 0.2s}
+        .producto-card:hover{transform:scale(1.02);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
         @media(max-width:576px){header h1{font-size:1.5rem}}
+        /* ===== FIN ESTILOS ===== */
     </style>
 </head>
 <body>
 
+<!-- ============================================================ -->
+<!-- SECCIÓN: ENCABEZADO (header)                                   -->
+<!-- Para Flask: Este bloque iría en base.html como {% block header %} -->
+<!-- ============================================================ -->
 <header class="text-center">
     <div class="container">
         <h1>Tienda de Tecnologia DC</h1>
@@ -25,6 +33,10 @@
     </div>
 </header>
 
+<!-- ============================================================ -->
+<!-- SECCIÓN: MENÚ DE NAVEGACIÓN (nav)                             -->
+<!-- Para Flask: Este bloque iría en base.html como {% block nav %}   -->
+<!-- ============================================================ -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container">
         <a class="navbar-brand" href="#">Tienda DC</a>
@@ -43,20 +55,27 @@
     </div>
 </nav>
 
+<!-- ============================================================ -->
+<!-- SECCIÓN: CONTENIDO PRINCIPAL (main)                           -->
+<!-- Para Flask: Este bloque iría en base.html como {% block main %}  -->
+<!-- ============================================================ -->
 <main class="container">
 
+    <!-- INICIO -->
     <section id="inicio">
         <h2 class="text-primary">Inicio</h2>
         <p>Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
         <a href="#productos" class="btn btn-primary">Registrar Producto</a>
     </section>
 
+    <!-- QUIENES SOMOS -->
     <section id="quienes">
         <h2 class="text-primary">Quienes Somos</h2>
         <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles. Vendemos procesadores, tarjetas graficas, memorias RAM, discos duros, fuentes de poder y todo lo necesario para armar una PC.</p>
         <img src="https://www.channelbiz.es/wp-content/uploads/2017/03/PcComponentes-Madrid.jpg" alt="Componentes" class="img-fluid rounded" width="400">
     </section>
 
+    <!-- SERVICIOS -->
     <section id="servicios">
         <h2 class="text-primary">Servicios y Productos</h2>
         <ul>
@@ -69,12 +88,17 @@
         </ul>
     </section>
 
-    <!-- SECCION REGISTRAR PRODUCTO CON VALIDACIONES -->
+    <!-- ============================================================ -->
+    <!-- SECCIÓN: REGISTRO DE PRODUCTOS (dinámica)                     -->
+    <!-- Para Flask: Este bloque iría en una plantilla hija            -->
+    <!-- ============================================================ -->
     <section id="productos" class="bg-light p-4 rounded">
         <h2 class="text-primary">Registrar Producto</h2>
-        
+
+        <!-- Mensaje de éxito -->
         <div id="mensajeExito" class="alert alert-success" style="display:none">Producto registrado!</div>
 
+        <!-- Formulario -->
         <form id="formProducto" class="row g-3" novalidate>
             <div class="col-md-4">
                 <label class="form-label">Nombre *</label>
@@ -115,6 +139,7 @@
 
         <hr>
 
+        <!-- Contador y lista de productos -->
         <div class="d-flex justify-content-between">
             <h5>Productos (<span id="contador">0</span>)</h5>
         </div>
@@ -123,6 +148,7 @@
         </div>
     </section>
 
+    <!-- CONTACTO -->
     <section id="contacto">
         <h2 class="text-primary">Contacto</h2>
         <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
@@ -137,6 +163,10 @@
 
 </main>
 
+<!-- ============================================================ -->
+<!-- SECCIÓN: ASIDE (información complementaria)                    -->
+<!-- Para Flask: Este bloque iría en base.html como {% block aside %} -->
+<!-- ============================================================ -->
 <aside class="container">
     <div class="row text-center">
         <div class="col-6 col-md-3"><h6>Promociones</h6><p class="small">10% descuento</p></div>
@@ -146,6 +176,10 @@
     </div>
 </aside>
 
+<!-- ============================================================ -->
+<!-- SECCIÓN: PIE DE PÁGINA (footer)                                -->
+<!-- Para Flask: Este bloque iría en base.html como {% block footer %} -->
+<!-- ============================================================ -->
 <footer>
     <div class="container">
         <p>Desarrollado por Danny Cambi y Amy Pardo</p>
@@ -153,6 +187,10 @@
     </div>
 </footer>
 
+<!-- ============================================================ -->
+<!-- SECCIÓN: SCRIPTS                                              -->
+<!-- Para Flask: Este bloque iría en base.html como {% block scripts %} -->
+<!-- ============================================================ -->
 <script src="script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
