@@ -1,5 +1,5 @@
 // =============================================================
-// DATOS INICIALES (arreglo de productos)
+// DATOS INICIALES
 // =============================================================
 let productos = [];
 
@@ -14,6 +14,8 @@ const d = document.getElementById('descripcion');
 const lista = document.getElementById('listaProductos');
 const contador = document.getElementById('contador');
 const mensajeExito = document.getElementById('mensajeExito');
+const btnSpinner = document.getElementById('btnSpinner');
+const spinnerContainer = document.getElementById('spinnerContainer');
 
 const errN = document.getElementById('errNombre');
 const errC = document.getElementById('errCategoria');
@@ -100,13 +102,9 @@ function validarTodo() {
 // =============================================================
 // RENDERIZADO DINÁMICO (Semana 7)
 // =============================================================
-
-// Función para renderizar todos los productos
 function renderizarProductos() {
-    // Limpiar la lista
     lista.innerHTML = '';
 
-    // CONDICIÓN: Si no hay productos, mostrar mensaje
     if (productos.length === 0) {
         const vacio = document.createElement('p');
         vacio.className = 'text-muted text-center';
@@ -116,10 +114,8 @@ function renderizarProductos() {
         return;
     }
 
-    // ACTUALIZAR CONTADOR
     contador.textContent = productos.length;
 
-    // RECORRER EL ARREGLO Y CREAR TARJETAS
     productos.forEach(function(producto, index) {
         const col = document.createElement('div');
         col.className = 'col-md-4 col-sm-6 mb-3 producto-card';
@@ -147,9 +143,7 @@ function renderizarProductos() {
         btn.textContent = 'Eliminar';
         btn.addEventListener('click', function() {
             if (confirm('¿Eliminar "' + producto.nombre + '"?')) {
-                // Eliminar del arreglo
                 productos.splice(index, 1);
-                // Re-renderizar
                 renderizarProductos();
             }
         });
@@ -177,12 +171,11 @@ d.addEventListener('input', validarDescripcion);
 d.addEventListener('blur', validarDescripcion);
 
 // =============================================================
-// EVENTO SUBMIT (Registrar nuevo producto)
+// EVENTO SUBMIT
 // =============================================================
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Validar
     if (!validarTodo()) {
         let alerta = document.createElement('div');
         alerta.className = 'alert alert-danger';
@@ -192,7 +185,6 @@ form.addEventListener('submit', function(e) {
         return;
     }
 
-    // Crear objeto producto
     const nuevoProducto = {
         nombre: n.value.trim(),
         categoria: c.value,
@@ -200,17 +192,12 @@ form.addEventListener('submit', function(e) {
         descripcion: d.value.trim()
     };
 
-    // Agregar al arreglo
     productos.push(nuevoProducto);
-
-    // Renderizar nuevamente
     renderizarProductos();
 
-    // Mostrar mensaje de éxito
     mensajeExito.style.display = 'block';
     setTimeout(function() { mensajeExito.style.display = 'none'; }, 3000);
 
-    // Limpiar formulario
     form.reset();
     [n, c, p, d].forEach(function(campo) { campo.classList.remove('is-valid', 'is-invalid'); });
     [okN, okC, okP, okD].forEach(function(msg) { msg.style.display = 'none'; });
@@ -219,15 +206,32 @@ form.addEventListener('submit', function(e) {
 });
 
 // =============================================================
-// CARGA INICIAL (con datos de ejemplo)
+// SPINNER (simular carga)
 // =============================================================
-// Datos iniciales para mostrar que funciona
+btnSpinner.addEventListener('click', function() {
+    spinnerContainer.style.display = 'block';
+    btnSpinner.disabled = true;
+
+    setTimeout(function() {
+        spinnerContainer.style.display = 'none';
+        btnSpinner.disabled = false;
+        // Alerta de Bootstrap (se crea dinámicamente)
+        const alerta = document.createElement('div');
+        alerta.className = 'alert alert-info';
+        alerta.textContent = 'Carga completada!';
+        document.getElementById('productos').prepend(alerta);
+        setTimeout(function() { alerta.remove(); }, 3000);
+    }, 2000);
+});
+
+// =============================================================
+// CARGA INICIAL
+// =============================================================
 const datosEjemplo = [
     { nombre: 'RTX 4060', categoria: 'Tarjeta Grafica', precio: 350, descripcion: 'Tarjeta grafica de gama media' },
     { nombre: 'Ryzen 7 5800X', categoria: 'Procesador', precio: 320, descripcion: 'Procesador de 8 nucleos para gaming' },
     { nombre: 'SSD 1TB NVMe', categoria: 'Disco Duro', precio: 120, descripcion: 'Almacenamiento ultra rapido' }
 ];
 
-// Cargar datos de ejemplo
 productos = datosEjemplo;
 renderizarProductos();

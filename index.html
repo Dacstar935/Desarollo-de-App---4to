@@ -4,43 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Tecnologia DC</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* ===== INICIO ESTILOS ===== */
         header{background:#0d6efd;color:#fff;padding:20px 0}
         section{padding:30px 0;border-bottom:1px solid #ddd}
         section:last-child{border-bottom:none}
-        aside{background:#e9ecef;padding:15px;border-radius:8px;margin:20px 0}
         footer{background:#0d6efd;color:#fff;text-align:center;padding:15px 0;margin-top:20px}
         .error-msg{color:#dc3545;font-size:0.85rem;display:none;margin-top:5px}
         .success-msg{color:#198754;font-size:0.85rem;display:none;margin-top:5px}
         .producto-card{transition:all 0.2s}
         .producto-card:hover{transform:scale(1.02);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
         @media(max-width:576px){header h1{font-size:1.5rem}}
-        /* ===== FIN ESTILOS ===== */
     </style>
 </head>
 <body>
 
 <!-- ============================================================ -->
-<!-- SECCIÓN: ENCABEZADO (header)                                   -->
-<!-- Para Flask: Este bloque iría en base.html como {% block header %} -->
-<!-- ============================================================ -->
-<header class="text-center">
-    <div class="container">
-        <h1>Tienda de Tecnologia DC</h1>
-        <p>Sistema para la venta de componentes de PC</p>
-    </div>
-</header>
-
-<!-- ============================================================ -->
-<!-- SECCIÓN: MENÚ DE NAVEGACIÓN (nav)                             -->
-<!-- Para Flask: Este bloque iría en base.html como {% block nav %}   -->
+<!-- HEADER (navbar de Bootstrap)                                   -->
 <!-- ============================================================ -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Tienda DC</a>
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+        <a class="navbar-brand fw-bold" href="#">Tienda DC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="nav">
@@ -56,58 +42,72 @@
 </nav>
 
 <!-- ============================================================ -->
-<!-- SECCIÓN: CONTENIDO PRINCIPAL (main)                           -->
-<!-- Para Flask: Este bloque iría en base.html como {% block main %}  -->
+<!-- MAIN CONTENT                                                  -->
 <!-- ============================================================ -->
 <main class="container">
 
     <!-- INICIO -->
     <section id="inicio">
-        <h2 class="text-primary">Inicio</h2>
-        <p>Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
-        <a href="#productos" class="btn btn-primary">Registrar Producto</a>
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h2 class="text-primary">Inicio</h2>
+                <p class="lead">Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
+                <a href="#productos" class="btn btn-primary">Registrar Producto</a>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-primary text-white p-3 text-center rounded">
+                    <p class="mb-0">+50 clientes</p>
+                    <p class="mb-0">100% original</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- QUIENES SOMOS -->
     <section id="quienes">
         <h2 class="text-primary">Quienes Somos</h2>
-        <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles. Vendemos procesadores, tarjetas graficas, memorias RAM, discos duros, fuentes de poder y todo lo necesario para armar una PC.</p>
-        <img src="https://www.channelbiz.es/wp-content/uploads/2017/03/PcComponentes-Madrid.jpg" alt="Componentes" class="img-fluid rounded" width="400">
+        <div class="row">
+            <div class="col-md-7">
+                <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles.</p>
+            </div>
+            <div class="col-md-5">
+                <img src="https://www.channelbiz.es/wp-content/uploads/2017/03/PcComponentes-Madrid.jpg" alt="Componentes" class="img-fluid rounded">
+            </div>
+        </div>
     </section>
 
     <!-- SERVICIOS -->
     <section id="servicios">
         <h2 class="text-primary">Servicios y Productos</h2>
-        <ul>
-            <li>Procesadores Intel y AMD</li>
-            <li>Tarjetas Graficas NVIDIA y AMD</li>
-            <li>Memorias RAM DDR4 y DDR5</li>
-            <li>Discos SSD y HDD</li>
-            <li>Fuentes de Poder</li>
-            <li>Asesoria Tecnica</li>
-        </ul>
+        <div class="row">
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Procesadores</h5><p class="small">Intel y AMD</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Tarjetas Graficas</h5><p class="small">NVIDIA y AMD</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Memorias RAM</h5><p class="small">DDR4 y DDR5</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Discos SSD/HDD</h5><p class="small">Almacenamiento</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Fuentes de Poder</h5><p class="small">500W a 850W</p></div></div></div>
+            <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Asesoria Tecnica</h5><p class="small">Armado de PC</p></div></div></div>
+        </div>
     </section>
 
     <!-- ============================================================ -->
-    <!-- SECCIÓN: REGISTRO DE PRODUCTOS (dinámica)                     -->
-    <!-- Para Flask: Este bloque iría en una plantilla hija            -->
+    <!-- REGISTRAR PRODUCTO (con Bootstrap mejorado)                    -->
     <!-- ============================================================ -->
     <section id="productos" class="bg-light p-4 rounded">
         <h2 class="text-primary">Registrar Producto</h2>
 
-        <!-- Mensaje de éxito -->
-        <div id="mensajeExito" class="alert alert-success" style="display:none">Producto registrado!</div>
+        <!-- ALERTA de éxito (Bootstrap) -->
+        <div id="mensajeExito" class="alert alert-success" style="display:none">Producto registrado exitosamente!</div>
 
-        <!-- Formulario -->
+        <!-- FORMULARIO con clases Bootstrap -->
         <form id="formProducto" class="row g-3" novalidate>
             <div class="col-md-4">
-                <label class="form-label">Nombre *</label>
+                <label for="nombre" class="form-label">Nombre *</label>
                 <input type="text" id="nombre" class="form-control" placeholder="Ej: RTX 4060">
                 <div class="error-msg" id="errNombre">Minimo 3 caracteres</div>
                 <div class="success-msg" id="okNombre">Valido</div>
             </div>
             <div class="col-md-4">
-                <label class="form-label">Categoria *</label>
+                <label for="categoria" class="form-label">Categoria *</label>
                 <select id="categoria" class="form-select">
                     <option value="">Selecciona...</option>
                     <option value="Procesador">Procesador</option>
@@ -120,13 +120,13 @@
                 <div class="success-msg" id="okCategoria">Valido</div>
             </div>
             <div class="col-md-4">
-                <label class="form-label">Precio</label>
+                <label for="precio" class="form-label">Precio</label>
                 <input type="number" id="precio" class="form-control" placeholder="Ej: 250" min="0">
                 <div class="error-msg" id="errPrecio">No puede ser negativo</div>
                 <div class="success-msg" id="okPrecio">Valido</div>
             </div>
             <div class="col-12">
-                <label class="form-label">Descripcion *</label>
+                <label for="descripcion" class="form-label">Descripcion *</label>
                 <textarea id="descripcion" class="form-control" rows="2" placeholder="Minimo 10 caracteres"></textarea>
                 <div class="error-msg" id="errDescripcion">Minimo 10 caracteres</div>
                 <div class="success-msg" id="okDescripcion">Valido</div>
@@ -134,15 +134,31 @@
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Agregar</button>
                 <button type="reset" class="btn btn-secondary">Limpiar</button>
+                <!-- BOTON para abrir el modal -->
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalInfo">
+                    Ver ayuda
+                </button>
             </div>
         </form>
 
         <hr>
 
-        <!-- Contador y lista de productos -->
-        <div class="d-flex justify-content-between">
+        <!-- CONTADOR -->
+        <div class="d-flex justify-content-between align-items-center">
             <h5>Productos (<span id="contador">0</span>)</h5>
+            <!-- BOTON para mostrar spinner -->
+            <button id="btnSpinner" class="btn btn-warning">Simular carga</button>
         </div>
+
+        <!-- SPINNER (oculto inicialmente) -->
+        <div id="spinnerContainer" class="text-center my-3" style="display:none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="text-muted">Cargando productos...</p>
+        </div>
+
+        <!-- LISTA DE PRODUCTOS -->
         <div id="listaProductos" class="row mt-3">
             <p class="text-muted text-center" id="vacio">No hay productos</p>
         </div>
@@ -151,34 +167,51 @@
     <!-- CONTACTO -->
     <section id="contacto">
         <h2 class="text-primary">Contacto</h2>
-        <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
-        <p><strong>Telefono:</strong> 0987654321</p>
-        <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
-        <a href="#" class="btn btn-primary btn-sm">Facebook</a>
-        <a href="#" class="btn btn-danger btn-sm">Instagram</a>
-        <div class="ratio ratio-16x9 mt-3" style="max-width:560px">
-            <iframe src="https://www.youtube.com/embed/hKZMQVloVOM" allowfullscreen></iframe>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
+                <p><strong>Telefono:</strong> 0987654321</p>
+                <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
+                <a href="#" class="btn btn-primary btn-sm">Facebook</a>
+                <a href="#" class="btn btn-danger btn-sm">Instagram</a>
+            </div>
+            <div class="col-md-6">
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/hKZMQVloVOM" allowfullscreen></iframe>
+                </div>
+            </div>
         </div>
     </section>
 
 </main>
 
 <!-- ============================================================ -->
-<!-- SECCIÓN: ASIDE (información complementaria)                    -->
-<!-- Para Flask: Este bloque iría en base.html como {% block aside %} -->
+<!-- MODAL BOOTSTRAP                                               -->
 <!-- ============================================================ -->
-<aside class="container">
-    <div class="row text-center">
-        <div class="col-6 col-md-3"><h6>Promociones</h6><p class="small">10% descuento</p></div>
-        <div class="col-6 col-md-3"><h6>Horarios</h6><p class="small">Lun-Sab 9am-7pm</p></div>
-        <div class="col-6 col-md-3"><h6>Envios</h6><p class="small">Todo el pais</p></div>
-        <div class="col-6 col-md-3"><h6>Garantia</h6><p class="small">1 año</p></div>
+<div class="modal fade" id="modalInfo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ayuda para registrar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nombre:</strong> Minimo 3 caracteres</p>
+                <p><strong>Categoria:</strong> Selecciona una opcion</p>
+                <p><strong>Precio:</strong> No puede ser negativo (opcional)</p>
+                <p><strong>Descripcion:</strong> Minimo 10 caracteres</p>
+                <hr>
+                <p class="text-muted small">Completa todos los campos obligatorios (*)</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
     </div>
-</aside>
+</div>
 
 <!-- ============================================================ -->
-<!-- SECCIÓN: PIE DE PÁGINA (footer)                                -->
-<!-- Para Flask: Este bloque iría en base.html como {% block footer %} -->
+<!-- FOOTER                                                        -->
 <!-- ============================================================ -->
 <footer>
     <div class="container">
@@ -188,10 +221,10 @@
 </footer>
 
 <!-- ============================================================ -->
-<!-- SECCIÓN: SCRIPTS                                              -->
-<!-- Para Flask: Este bloque iría en base.html como {% block scripts %} -->
+<!-- SCRIPTS                                                       -->
 <!-- ============================================================ -->
 <script src="script.js"></script>
+<!-- Bootstrap JS (necesario para el modal) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
