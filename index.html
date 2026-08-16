@@ -12,10 +12,12 @@
         section:last-child{border-bottom:none}
         footer{background:#0d6efd;color:#fff;text-align:center;padding:15px 0;margin-top:20px}
         @media(max-width:576px){header h1{font-size:1.5rem}}
+        .card:hover{transform:scale(1.02);transition:0.2s}
     </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
     <div class="container">
         <h1>Tienda de Tecnologia DC</h1>
@@ -23,7 +25,8 @@
     </div>
 </header>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="#">Tienda DC</a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -40,42 +43,89 @@
     </div>
 </nav>
 
+<!-- MAIN CONTENT -->
 <main class="container py-4">
 
+    <!-- INICIO -->
     <section id="inicio">
         <h2 class="text-primary">Inicio</h2>
-        <p>Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
+        <p class="lead">Bienvenidos a Tienda de Tecnologia DC. Ofrecemos componentes de computadora de calidad.</p>
         <a href="#contacto" class="btn btn-primary">Contactanos</a>
     </section>
 
+    <!-- QUIENES SOMOS -->
     <section id="quienes">
         <h2 class="text-primary">Quienes Somos</h2>
-        <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia.</p>
-        <img src="https://placehold.co/600x400/0d6efd/white?text=Tienda+DC" alt="Componentes" class="img-fluid rounded">
+        <div class="row">
+            <div class="col-md-7">
+                <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles. Vendemos procesadores, tarjetas graficas, memorias RAM, discos duros, fuentes de poder y todo lo necesario para armar una PC.</p>
+            </div>
+            <div class="col-md-5">
+                <!-- AQUÍ VA LA IMAGEN. USA UNA URL DIRECTA -->
+                <img src="https://placehold.co/600x400/0d6efd/white?text=Tienda+DC" alt="Componentes" class="img-fluid rounded">
+            </div>
+        </div>
     </section>
 
+    <!-- SERVICIOS -->
     <section id="servicios">
         <h2 class="text-primary">Servicios</h2>
-        <ul>
-            <li>Venta de procesadores Intel y AMD</li>
-            <li>Venta de tarjetas graficas NVIDIA y AMD</li>
-            <li>Venta de memorias RAM DDR4 y DDR5</li>
-            <li>Venta de discos SSD y HDD</li>
-            <li>Venta de fuentes de poder</li>
-        </ul>
+        <div class="row">
+            <div class="col-6 col-md-4 mb-3">
+                <div class="card text-center">
+                    <div class="card-body"><h5>Procesadores</h5><p class="small">Intel y AMD</p></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 mb-3">
+                <div class="card text-center">
+                    <div class="card-body"><h5>Tarjetas Graficas</h5><p class="small">NVIDIA y AMD</p></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 mb-3">
+                <div class="card text-center">
+                    <div class="card-body"><h5>Memorias RAM</h5><p class="small">DDR4 y DDR5</p></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 mb-3">
+                <div class="card text-center">
+                    <div class="card-body"><h5>Discos SSD/HDD</h5><p class="small">Almacenamiento</p></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 mb-3">
+                <div class="card text-center">
+                    <div class="card-body"><h5>Fuentes de Poder</h5><p class="small">500W a 850W</p></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 mb-3">
+                <div class="card text-center">
+                    <div class="card-body"><h5>Asesoria Tecnica</h5><p class="small">Armado de PC</p></div>
+                </div>
+            </div>
+        </div>
     </section>
 
+    <!-- CONTACTO -->
     <section id="contacto">
         <h2 class="text-primary">Contacto</h2>
-        <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
-        <p><strong>Telefono:</strong> 0987654321</p>
-        <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
-        <a href="#" class="btn btn-primary btn-sm">Facebook</a>
-        <a href="#" class="btn btn-danger btn-sm">Instagram</a>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
+                <p><strong>Telefono:</strong> 0987654321</p>
+                <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
+                <a href="#" class="btn btn-primary btn-sm">Facebook</a>
+                <a href="#" class="btn btn-danger btn-sm">Instagram</a>
+            </div>
+            <div class="col-md-6">
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/hKZMQVloVOM" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
     </section>
 
 </main>
 
+<!-- FOOTER -->
 <footer>
     <div class="container">
         <p>Desarrollado por Danny Cambi y Amy Pardo</p>
