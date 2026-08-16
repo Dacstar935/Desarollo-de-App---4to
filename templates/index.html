@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section id="inicio">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1 class="text-primary">Tienda de Tecnologia DC</h1>
+            <p class="lead">Sistema para la venta y administración de componentes de computadoras</p>
+            <p>Ofrecemos componentes de computadora de calidad para gaming, oficina y trabajo profesional.</p>
+            <a href="{{ url_for('productos') }}" class="btn btn-primary">Ver Productos</a>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-primary text-white p-3 text-center rounded">
+                <p class="mb-0">+50 clientes</p>
+                <p class="mb-0">100% original</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="quienes" class="mt-4 pt-4 border-top">
+    <h2 class="text-primary">Quienes Somos</h2>
+    <div class="row">
+        <div class="col-md-7">
+            <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles.</p>
+        </div>
+        <div class="col-md-5">
+            <img src="{{ url_for('static', filename='img/tienda.jpg') }}" alt="Componentes" class="img-fluid rounded" onerror="this.src='https://placehold.co/600x400/0d6efd/white?text=Tienda+DC'">
+        </div>
+    </div>
+</section>
+
+<section id="servicios" class="mt-4 pt-4 border-top">
+    <h2 class="text-primary">Servicios y Productos</h2>
+    <div class="row">
+        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Procesadores</h5><p class="small">Intel y AMD</p></div></div></div>
+        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Tarjetas Graficas</h5><p class="small">NVIDIA y AMD</p></div></div></div>
+        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Memorias RAM</h5><p class="small">DDR4 y DDR5</p></div></div></div>
+        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Discos SSD/HDD</h5><p class="small">Almacenamiento</p></div></div></div>
+        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Fuentes de Poder</h5><p class="small">500W a 850W</p></div></div></div>
+        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Asesoria Tecnica</h5><p class="small">Armado de PC</p></div></div></div>
+    </div>
+</section>
+
+<section id="contacto" class="mt-4 pt-4 border-top">
+    <h2 class="text-primary">Contacto</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Email:</strong> ventas@tecnologiadc.com</p>
+            <p><strong>Telefono:</strong> 0987654321</p>
+            <p><strong>Direccion:</strong> Av. Amazonas N34-56, Quito</p>
+            <a href="#" class="btn btn-primary btn-sm">Facebook</a>
+            <a href="#" class="btn btn-danger btn-sm">Instagram</a>
+        </div>
+        <div class="col-md-6">
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/hKZMQVloVOM" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
