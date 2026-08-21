@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
+{% block title %}{{ nombre_tienda }}{% endblock %}
+
 {% block content %}
 
 <section id="inicio">
     <div class="row align-items-center">
         <div class="col-md-8">
-            <h1 class="text-primary">Tienda de Tecnologia DC</h1>
+            <h1 class="text-primary">{{ nombre_tienda }}</h1>
             <p class="lead">Sistema para la venta y administración de componentes de computadoras</p>
             <p>Ofrecemos componentes de computadora de calidad para gaming, oficina y trabajo profesional.</p>
+            <p><strong>Año:</strong> {{ anio }}</p>
             <a href="{{ url_for('productos') }}" class="btn btn-primary">Ver Productos</a>
         </div>
         <div class="col-md-4">
@@ -26,20 +29,44 @@
             <p>Tienda de Tecnologia DC es un emprendimiento creado por Danny Cambi y Amy Pardo, estudiantes apasionados por la tecnologia. Ofrecemos componentes de computadora de buena calidad a precios accesibles.</p>
         </div>
         <div class="col-md-5">
-            <img src="{{ url_for('static', filename='img/tienda.jpg') }}" alt="Componentes" class="img-fluid rounded" onerror="this.src='https://placehold.co/600x400/0d6efd/white?text=Tienda+DC'">
+            <img src="https://i.pinimg.com/1200x/1a/39/e1/1a39e1ad7b5ae35dacd30fc70b201830.jpg" alt="Componentes" class="img-fluid rounded">
         </div>
     </div>
 </section>
 
 <section id="servicios" class="mt-4 pt-4 border-top">
-    <h2 class="text-primary">Servicios y Productos</h2>
+    <h2 class="text-primary">Servicios</h2>
     <div class="row">
-        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Procesadores</h5><p class="small">Intel y AMD</p></div></div></div>
-        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Tarjetas Graficas</h5><p class="small">NVIDIA y AMD</p></div></div></div>
-        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Memorias RAM</h5><p class="small">DDR4 y DDR5</p></div></div></div>
-        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Discos SSD/HDD</h5><p class="small">Almacenamiento</p></div></div></div>
-        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Fuentes de Poder</h5><p class="small">500W a 850W</p></div></div></div>
-        <div class="col-6 col-md-4 mb-3"><div class="card text-center"><div class="card-body"><h5>Asesoria Tecnica</h5><p class="small">Armado de PC</p></div></div></div>
+        <div class="col-6 col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body"><h5>Procesadores</h5><p class="small">Intel y AMD</p></div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body"><h5>Tarjetas Graficas</h5><p class="small">NVIDIA y AMD</p></div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body"><h5>Memorias RAM</h5><p class="small">DDR4 y DDR5</p></div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body"><h5>Discos SSD/HDD</h5><p class="small">Almacenamiento</p></div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body"><h5>Fuentes de Poder</h5><p class="small">500W a 850W</p></div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body"><h5>Asesoria Tecnica</h5><p class="small">Armado de PC</p></div>
+            </div>
+        </div>
     </div>
 </section>
 

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h2 class="text-primary">Proveedores</h2>
 <p class="text-muted">Lista de proveedores de la tienda.</p>
 
@@ -12,6 +13,7 @@
                 <th>Nombre</th>
                 <th>Producto</th>
                 <th>Contacto</th>
+                <th>País</th>
             </tr>
         </thead>
         <tbody>
@@ -21,10 +23,11 @@
                 <td>{{ proveedor.nombre }}</td>
                 <td>{{ proveedor.producto }}</td>
                 <td>{{ proveedor.contacto }}</td>
+                <td>{{ proveedor.pais|upper }}</td>
             </tr>
             {% else %}
             <tr>
-                <td colspan="4" class="text-center text-muted">No hay proveedores registrados</td>
+                <td colspan="5" class="text-center text-muted">No hay proveedores registrados</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -34,4 +37,5 @@
 <div class="mt-3">
     <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver</a>
 </div>
+
 {% endblock %}
