@@ -3,8 +3,68 @@
 {% block content %}
 
 <h2 class="text-primary">Clientes</h2>
-<p class="text-muted">Lista de clientes registrados ({{ clientes|length }})</p>
+<p class="text-muted">Total: {{ lista_clientes|length }}</p>
 
+<!-- Mostrar mensajes flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<!-- FORMULARIO PARA AGREGAR -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Agregar Cliente</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('clientes') }}">
+            {{ form.hidden_tag() }}
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.nombre.label(class="form-label") }}
+                    {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                    {% for error in form.nombre.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.telefono.label(class="form-label") }}
+                    {{ form.telefono(class="form-control" + (" is-invalid" if form.telefono.errors else "")) }}
+                    {% for error in form.telefono.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.ciudad.label(class="form-label") }}
+                    {{ form.ciudad(class="form-select" + (" is-invalid" if form.ciudad.errors else "")) }}
+                    {% for error in form.ciudad.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="col-12">
+                    {{ form.submit(class="btn btn-primary") }}
+                    <a href="{{ url_for('clientes') }}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- LISTA DE CLIENTES -->
 <div class="table-responsive">
     <table class="table table-striped table-hover">
         <thead class="table-primary">
@@ -14,25 +74,27 @@
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>Ciudad</th>
-                <th>Estado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            {% for cliente in clientes %}
+            {% for cliente in lista_clientes %}
             <tr>
                 <td>{{ cliente.id }}</td>
                 <td>{{ cliente.nombre|title }}</td>
                 <td>{{ cliente.email|lower }}</td>
                 <td>{{ cliente.telefono }}</td>
-                <td>{{ cliente.ciudad }}</td>
                 <td>
                     {% if cliente.ciudad == 'Quito' %}
                         <span class="badge bg-primary">Local</span>
                     {% elif cliente.ciudad == 'Guayaquil' %}
                         <span class="badge bg-warning text-dark">Costa</span>
                     {% else %}
-                        <span class="badge bg-secondary">Otro</span>
+                        <span class="badge bg-secondary">{{ cliente.ciudad }}</span>
                     {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('eliminar', tipo='cliente', id=cliente.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
                 </td>
             </tr>
             {% else %}
