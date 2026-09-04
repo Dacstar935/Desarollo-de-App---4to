@@ -86,7 +86,7 @@
                 <td>{{ proveedor.contacto }}</td>
                 <td>{{ proveedor.pais|upper }}</td>
                 <td>
-                    <a href="{{ url_for('eliminar', tipo='proveedor', id=proveedor.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este proveedor?')">Eliminar</a>
+                    <a href="{{ url_for('eliminar_proveedor', id=proveedor.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este proveedor?')">Eliminar</a>
                 </td>
             </tr>
             {% else %}

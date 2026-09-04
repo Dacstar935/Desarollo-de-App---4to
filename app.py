@@ -3,35 +3,80 @@ from forms.producto_form import ProductoForm
 from forms.cliente_form import ClienteForm
 from forms.proveedor_form import ProveedorForm
 from forms.facturacion_form import FacturacionForm
+import sqlite3
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'clave_secreta_para_csrf_123456'
 
 # ============================================================
-# DATOS DE EJEMPLO (LISTAS CON NOMBRES CLAROS)
+# CONFIGURACIÓN DE LA BASE DE DATOS
 # ============================================================
-lista_productos = [
-    {'id': 1, 'nombre': 'RTX 4060', 'categoria': 'Tarjeta Grafica', 'precio': 350, 'stock': 10, 'descripcion': 'Tarjeta grafica de gama media'},
-    {'id': 2, 'nombre': 'Ryzen 7 5800X', 'categoria': 'Procesador', 'precio': 320, 'stock': 5, 'descripcion': 'Procesador de 8 nucleos'},
-    {'id': 3, 'nombre': 'SSD 1TB NVMe', 'categoria': 'Disco Duro', 'precio': 120, 'stock': 0, 'descripcion': 'Almacenamiento ultra rapido'},
-]
+DATABASE = os.path.join(os.path.dirname(__file__), 'data', 'tienda.db')
 
-lista_clientes = [
-    {'id': 1, 'nombre': 'Carlos Perez', 'email': 'carlos@email.com', 'telefono': '0987654321', 'ciudad': 'Quito'},
-    {'id': 2, 'nombre': 'Maria Gomez', 'email': 'maria@email.com', 'telefono': '0976543210', 'ciudad': 'Guayaquil'},
-]
+def get_db():
+    """Establece conexión con la base de datos SQLite"""
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
 
-lista_proveedores = [
-    {'id': 1, 'nombre': 'Intel Corporation', 'producto': 'Procesadores', 'contacto': 'Ana Ramirez', 'pais': 'USA'},
-    {'id': 2, 'nombre': 'NVIDIA', 'producto': 'Tarjetas Graficas', 'contacto': 'Luis Torres', 'pais': 'USA'},
-]
+def init_db():
+    """Crea las tablas si no existen"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Tabla de productos
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS productos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            categoria TEXT NOT NULL,
+            precio REAL NOT NULL,
+            stock INTEGER NOT NULL,
+            descripcion TEXT
+        )
+    ''')
+    
+    # Tabla de clientes
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS clientes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            email TEXT NOT NULL,
+            telefono TEXT NOT NULL,
+            ciudad TEXT NOT NULL
+        )
+    ''')
+    
+    # Tabla de proveedores
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS proveedores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            producto TEXT NOT NULL,
+            contacto TEXT NOT NULL,
+            pais TEXT NOT NULL
+        )
+    ''')
+    
+    # Tabla de facturas
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS facturas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cliente TEXT NOT NULL,
+            producto TEXT NOT NULL,
+            cantidad INTEGER NOT NULL,
+            total REAL NOT NULL,
+            estado TEXT NOT NULL
+        )
+    ''')
+    
+    conn.commit()
+    conn.close()
+    print("✅ Base de datos inicializada correctamente")
 
-lista_facturas = [
-    {'id': 1, 'cliente': 'Carlos Perez', 'producto': 'RTX 4060', 'cantidad': 2, 'total': 700, 'estado': 'Pagado'},
-    {'id': 2, 'cliente': 'Maria Gomez', 'producto': 'Ryzen 7 5800X', 'cantidad': 1, 'total': 320, 'estado': 'Pendiente'},
-]
-
-contador_id = {'producto': 4, 'cliente': 3, 'proveedor': 3, 'factura': 3}
+# Inicializar la base de datos al arrancar la aplicación
+init_db()
 
 # ============================================================
 # RUTA PRINCIPAL
@@ -48,23 +93,45 @@ def index():
 @app.route('/productos', methods=['GET', 'POST'])
 def productos():
     form = ProductoForm()
-    global lista_productos
     
     if form.validate_on_submit():
-        nuevo = {
-            'id': contador_id['producto'],
-            'nombre': form.nombre.data,
-            'categoria': form.categoria.data,
-            'precio': form.precio.data,
-            'stock': form.stock.data,
-            'descripcion': form.descripcion.data or ''
-        }
-        lista_productos.append(nuevo)
-        contador_id['producto'] += 1
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO productos (nombre, categoria, precio, stock, descripcion)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (
+            form.nombre.data,
+            form.categoria.data,
+            form.precio.data,
+            form.stock.data,
+            form.descripcion.data or ''
+        ))
+        conn.commit()
+        conn.close()
         flash('Producto agregado exitosamente', 'success')
         return redirect(url_for('productos'))
     
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM productos ORDER BY id DESC')
+    lista_productos = cursor.fetchall()
+    conn.close()
+    
     return render_template('productos.html', lista_productos=lista_productos, form=form)
+
+# ============================================================
+# ELIMINAR PRODUCTO
+# ============================================================
+@app.route('/eliminar_producto/<int:id>')
+def eliminar_producto(id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM productos WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash('Producto eliminado', 'warning')
+    return redirect(url_for('productos'))
 
 # ============================================================
 # RUTA: CLIENTES
@@ -72,22 +139,44 @@ def productos():
 @app.route('/clientes', methods=['GET', 'POST'])
 def clientes():
     form = ClienteForm()
-    global lista_clientes
     
     if form.validate_on_submit():
-        nuevo = {
-            'id': contador_id['cliente'],
-            'nombre': form.nombre.data,
-            'email': form.email.data,
-            'telefono': form.telefono.data,
-            'ciudad': form.ciudad.data
-        }
-        lista_clientes.append(nuevo)
-        contador_id['cliente'] += 1
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO clientes (nombre, email, telefono, ciudad)
+            VALUES (?, ?, ?, ?)
+        ''', (
+            form.nombre.data,
+            form.email.data,
+            form.telefono.data,
+            form.ciudad.data
+        ))
+        conn.commit()
+        conn.close()
         flash('Cliente agregado exitosamente', 'success')
         return redirect(url_for('clientes'))
     
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM clientes ORDER BY id DESC')
+    lista_clientes = cursor.fetchall()
+    conn.close()
+    
     return render_template('clientes.html', lista_clientes=lista_clientes, form=form)
+
+# ============================================================
+# ELIMINAR CLIENTE
+# ============================================================
+@app.route('/eliminar_cliente/<int:id>')
+def eliminar_cliente(id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM clientes WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash('Cliente eliminado', 'warning')
+    return redirect(url_for('clientes'))
 
 # ============================================================
 # RUTA: PROVEEDORES
@@ -95,22 +184,44 @@ def clientes():
 @app.route('/proveedores', methods=['GET', 'POST'])
 def proveedores():
     form = ProveedorForm()
-    global lista_proveedores
     
     if form.validate_on_submit():
-        nuevo = {
-            'id': contador_id['proveedor'],
-            'nombre': form.nombre.data,
-            'producto': form.producto.data,
-            'contacto': form.contacto.data,
-            'pais': form.pais.data
-        }
-        lista_proveedores.append(nuevo)
-        contador_id['proveedor'] += 1
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO proveedores (nombre, producto, contacto, pais)
+            VALUES (?, ?, ?, ?)
+        ''', (
+            form.nombre.data,
+            form.producto.data,
+            form.contacto.data,
+            form.pais.data
+        ))
+        conn.commit()
+        conn.close()
         flash('Proveedor agregado exitosamente', 'success')
         return redirect(url_for('proveedores'))
     
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM proveedores ORDER BY id DESC')
+    lista_proveedores = cursor.fetchall()
+    conn.close()
+    
     return render_template('proveedores.html', lista_proveedores=lista_proveedores, form=form)
+
+# ============================================================
+# ELIMINAR PROVEEDOR
+# ============================================================
+@app.route('/eliminar_proveedor/<int:id>')
+def eliminar_proveedor(id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM proveedores WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash('Proveedor eliminado', 'warning')
+    return redirect(url_for('proveedores'))
 
 # ============================================================
 # RUTA: FACTURACION
@@ -118,42 +229,45 @@ def proveedores():
 @app.route('/facturacion', methods=['GET', 'POST'])
 def facturacion():
     form = FacturacionForm()
-    global lista_facturas
     
     if form.validate_on_submit():
-        nuevo = {
-            'id': contador_id['factura'],
-            'cliente': form.cliente.data,
-            'producto': form.producto.data,
-            'cantidad': form.cantidad.data,
-            'total': form.total.data,
-            'estado': form.estado.data
-        }
-        lista_facturas.append(nuevo)
-        contador_id['factura'] += 1
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO facturas (cliente, producto, cantidad, total, estado)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (
+            form.cliente.data,
+            form.producto.data,
+            form.cantidad.data,
+            form.total.data,
+            form.estado.data
+        ))
+        conn.commit()
+        conn.close()
         flash('Factura agregada exitosamente', 'success')
         return redirect(url_for('facturacion'))
+    
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM facturas ORDER BY id DESC')
+    lista_facturas = cursor.fetchall()
+    conn.close()
     
     return render_template('facturacion.html', lista_facturas=lista_facturas, form=form)
 
 # ============================================================
-# ELIMINAR REGISTROS
+# ELIMINAR FACTURA
 # ============================================================
-@app.route('/eliminar/<tipo>/<int:id>')
-def eliminar(tipo, id):
-    global lista_productos, lista_clientes, lista_proveedores, lista_facturas
-    
-    if tipo == 'producto':
-        lista_productos = [p for p in lista_productos if p['id'] != id]
-    elif tipo == 'cliente':
-        lista_clientes = [c for c in lista_clientes if c['id'] != id]
-    elif tipo == 'proveedor':
-        lista_proveedores = [p for p in lista_proveedores if p['id'] != id]
-    elif tipo == 'factura':
-        lista_facturas = [f for f in lista_facturas if f['id'] != id]
-    
-    flash('Registro eliminado', 'warning')
-    return redirect(request.referrer or url_for('index'))
+@app.route('/eliminar_factura/<int:id>')
+def eliminar_factura(id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM facturas WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash('Factura eliminada', 'warning')
+    return redirect(url_for('facturacion'))
 
 # ============================================================
 # EJECUTAR

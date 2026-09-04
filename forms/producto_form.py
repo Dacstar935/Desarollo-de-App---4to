@@ -33,5 +33,4 @@ class ProductoForm(FlaskForm):
         'Descripción',
         validators=[Optional(), Length(max=500, message='La descripción no puede exceder 500 caracteres')]
     )
-    # ===== CAMPO SUBMIT AGREGADO =====
     submit = SubmitField('Agregar Producto')

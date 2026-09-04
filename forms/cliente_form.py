@@ -27,5 +27,4 @@ class ClienteForm(FlaskForm):
         ],
         validators=[DataRequired(message='Selecciona una ciudad')]
     )
-    # ===== CAMPO SUBMIT AGREGADO =====
     submit = SubmitField('Agregar Cliente')

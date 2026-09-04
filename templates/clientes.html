@@ -94,7 +94,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ url_for('eliminar', tipo='cliente', id=cliente.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
+                    <a href="{{ url_for('eliminar_cliente', id=cliente.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
                 </td>
             </tr>
             {% else %}

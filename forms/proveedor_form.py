@@ -27,5 +27,4 @@ class ProveedorForm(FlaskForm):
         ],
         validators=[DataRequired(message='Selecciona un país')]
     )
-    # ===== CAMPO SUBMIT AGREGADO =====
     submit = SubmitField('Agregar Proveedor')

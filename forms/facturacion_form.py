@@ -29,5 +29,4 @@ class FacturacionForm(FlaskForm):
         ],
         validators=[DataRequired(message='Selecciona un estado')]
     )
-    # ===== CAMPO SUBMIT AGREGADO =====
     submit = SubmitField('Agregar Factura')

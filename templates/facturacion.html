@@ -103,7 +103,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ url_for('eliminar', tipo='factura', id=factura.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta factura?')">Eliminar</a>
+                    <a href="{{ url_for('eliminar_factura', id=factura.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta factura?')">Eliminar</a>
                 </td>
             </tr>
             {% else %}
