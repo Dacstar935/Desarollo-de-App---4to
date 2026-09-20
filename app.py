@@ -1,15 +1,112 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from forms.producto_form import ProductoForm
 from forms.cliente_form import ClienteForm
 from forms.proveedor_form import ProveedorForm
 from forms.facturacion_form import FacturacionForm
+from forms.login_form import LoginForm
+from forms.usuario_form import UsuarioForm
 from conexion.conexion import get_connection, init_db
+from models import Usuario
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'clave_secreta_para_csrf_123456'
 
-# Inicializar la base de datos al arrancar
+# ============================================================
+# CONFIGURACIÓN DE FLASK-LOGIN
+# ============================================================
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'Debes iniciar sesión para acceder'
+
+@login_manager.user_loader
+def load_user(user_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM usuarios WHERE id = %s', (user_id,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    if user:
+        return Usuario(user['id'], user['usuario'], user['password'])
+    return None
+
+# Inicializar base de datos
 init_db()
+
+# ============================================================
+# LOGIN
+# ============================================================
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute('SELECT * FROM usuarios WHERE usuario = %s', (form.usuario.data,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and check_password_hash(user['password'], form.password.data):
+            usuario_obj = Usuario(user['id'], user['usuario'], user['password'])
+            login_user(usuario_obj)
+            flash('Bienvenido ' + user['usuario'], 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Usuario o contraseña incorrectos', 'danger')
+
+    return render_template('login.html', form=form)
+
+# ============================================================
+# REGISTRO DE USUARIOS
+# ============================================================
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
+    form = UsuarioForm()
+    if form.validate_on_submit():
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM usuarios WHERE usuario = %s', (form.usuario.data,))
+        existe = cursor.fetchone()
+
+        if existe:
+            flash('El usuario ya existe', 'danger')
+            cursor.close()
+            conn.close()
+            return render_template('registro.html', form=form)
+
+        password_hash = generate_password_hash(form.password.data)
+        cursor.execute('INSERT INTO usuarios (usuario, password) VALUES (%s, %s)',
+                       (form.usuario.data, password_hash))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        flash('Usuario registrado exitosamente', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('registro.html', form=form)
+
+# ============================================================
+# LOGOUT
+# ============================================================
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Sesión cerrada', 'info')
+    return redirect(url_for('login'))
+
+# ============================================================
+# DASHBOARD (protegido)
+# ============================================================
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
 
 # ============================================================
 # RUTA PRINCIPAL
@@ -21,9 +118,10 @@ def index():
     return render_template('index.html', nombre_tienda=nombre_tienda, anio=anio)
 
 # ============================================================
-# PRODUCTOS - LISTAR (SELECT con JOIN)
+# PRODUCTOS (protegido)
 # ============================================================
 @app.route('/productos')
+@login_required
 def productos():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -36,14 +134,11 @@ def productos():
     lista_productos = cursor.fetchall()
     cursor.close()
     conn.close()
-    
     form = ProductoForm()
     return render_template('productos.html', lista_productos=lista_productos, form=form)
 
-# ============================================================
-# PRODUCTOS - AGREGAR (INSERT)
-# ============================================================
 @app.route('/productos/agregar', methods=['POST'])
+@login_required
 def agregar_producto():
     form = ProductoForm()
     if form.validate_on_submit():
@@ -52,67 +147,39 @@ def agregar_producto():
         cursor.execute('''
             INSERT INTO productos (nombre, categoria, precio, stock, descripcion)
             VALUES (%s, %s, %s, %s, %s)
-        ''', (
-            form.nombre.data,
-            form.categoria.data,
-            form.precio.data,
-            form.stock.data,
-            form.descripcion.data or ''
-        ))
+        ''', (form.nombre.data, form.categoria.data, form.precio.data, form.stock.data, form.descripcion.data or ''))
         conn.commit()
         cursor.close()
         conn.close()
         flash('Producto agregado exitosamente', 'success')
-    else:
-        flash('Corrige los errores del formulario', 'danger')
     return redirect(url_for('productos'))
 
-# ============================================================
-# PRODUCTOS - EDITAR (formulario con datos actuales)
-# ============================================================
 @app.route('/productos/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def editar_producto(id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    
     if request.method == 'POST':
         form = ProductoForm()
         if form.validate_on_submit():
             cursor.execute('''
-                UPDATE productos
-                SET nombre = %s, categoria = %s, precio = %s, stock = %s, descripcion = %s
-                WHERE id_producto = %s
-            ''', (
-                form.nombre.data,
-                form.categoria.data,
-                form.precio.data,
-                form.stock.data,
-                form.descripcion.data or '',
-                id
-            ))
+                UPDATE productos SET nombre=%s, categoria=%s, precio=%s, stock=%s, descripcion=%s
+                WHERE id_producto=%s
+            ''', (form.nombre.data, form.categoria.data, form.precio.data, form.stock.data, form.descripcion.data or '', id))
             conn.commit()
             cursor.close()
             conn.close()
-            flash('Producto actualizado exitosamente', 'success')
+            flash('Producto actualizado', 'success')
             return redirect(url_for('productos'))
-    
-    # GET: cargar datos actuales
     cursor.execute('SELECT * FROM productos WHERE id_producto = %s', (id,))
     producto = cursor.fetchone()
     cursor.close()
     conn.close()
-    
-    if not producto:
-        flash('Producto no encontrado', 'danger')
-        return redirect(url_for('productos'))
-    
     form = ProductoForm(data=producto)
-    return render_template('formulario_producto.html', form=form, producto=producto, editar=True)
+    return render_template('formulario_producto.html', form=form, producto=producto)
 
-# ============================================================
-# PRODUCTOS - ELIMINAR (DELETE)
-# ============================================================
 @app.route('/productos/eliminar/<int:id>')
+@login_required
 def eliminar_producto(id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -124,25 +191,22 @@ def eliminar_producto(id):
     return redirect(url_for('productos'))
 
 # ============================================================
-# CLIENTES
+# CLIENTES (protegido)
 # ============================================================
 @app.route('/clientes', methods=['GET', 'POST'])
+@login_required
 def clientes():
     form = ClienteForm()
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    
     if form.validate_on_submit():
-        cursor.execute('''
-            INSERT INTO clientes (nombre, email, telefono, ciudad)
-            VALUES (%s, %s, %s, %s)
-        ''', (form.nombre.data, form.email.data, form.telefono.data, form.ciudad.data))
+        cursor.execute('INSERT INTO clientes (nombre, email, telefono, ciudad) VALUES (%s, %s, %s, %s)',
+                       (form.nombre.data, form.email.data, form.telefono.data, form.ciudad.data))
         conn.commit()
-        flash('Cliente agregado exitosamente', 'success')
+        flash('Cliente agregado', 'success')
         cursor.close()
         conn.close()
         return redirect(url_for('clientes'))
-    
     cursor.execute('SELECT * FROM clientes ORDER BY id_cliente DESC')
     lista_clientes = cursor.fetchall()
     cursor.close()
@@ -150,6 +214,7 @@ def clientes():
     return render_template('clientes.html', lista_clientes=lista_clientes, form=form)
 
 @app.route('/clientes/eliminar/<int:id>')
+@login_required
 def eliminar_cliente(id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -161,25 +226,22 @@ def eliminar_cliente(id):
     return redirect(url_for('clientes'))
 
 # ============================================================
-# PROVEEDORES
+# PROVEEDORES (protegido)
 # ============================================================
 @app.route('/proveedores', methods=['GET', 'POST'])
+@login_required
 def proveedores():
     form = ProveedorForm()
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    
     if form.validate_on_submit():
-        cursor.execute('''
-            INSERT INTO proveedores (nombre, producto, contacto, pais)
-            VALUES (%s, %s, %s, %s)
-        ''', (form.nombre.data, form.producto.data, form.contacto.data, form.pais.data))
+        cursor.execute('INSERT INTO proveedores (nombre, producto, contacto, pais) VALUES (%s, %s, %s, %s)',
+                       (form.nombre.data, form.producto.data, form.contacto.data, form.pais.data))
         conn.commit()
-        flash('Proveedor agregado exitosamente', 'success')
+        flash('Proveedor agregado', 'success')
         cursor.close()
         conn.close()
         return redirect(url_for('proveedores'))
-    
     cursor.execute('SELECT * FROM proveedores ORDER BY id_proveedor DESC')
     lista_proveedores = cursor.fetchall()
     cursor.close()
@@ -187,6 +249,7 @@ def proveedores():
     return render_template('proveedores.html', lista_proveedores=lista_proveedores, form=form)
 
 @app.route('/proveedores/eliminar/<int:id>')
+@login_required
 def eliminar_proveedor(id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -198,25 +261,24 @@ def eliminar_proveedor(id):
     return redirect(url_for('proveedores'))
 
 # ============================================================
-# FACTURACION
+# FACTURACION (protegido)
 # ============================================================
 @app.route('/facturacion', methods=['GET', 'POST'])
+@login_required
 def facturacion():
     form = FacturacionForm()
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    
     if form.validate_on_submit():
         cursor.execute('''
-            INSERT INTO facturas (id_cliente, producto, cantidad, total, estado)
+            INSERT INTO facturas (cliente, producto, cantidad, total, estado)
             VALUES (%s, %s, %s, %s, %s)
-        ''', (1, form.producto.data, form.cantidad.data, form.total.data, form.estado.data))
+        ''', (form.cliente.data, form.producto.data, form.cantidad.data, form.total.data, form.estado.data))
         conn.commit()
-        flash('Factura agregada exitosamente', 'success')
+        flash('Factura agregada', 'success')
         cursor.close()
         conn.close()
         return redirect(url_for('facturacion'))
-    
     cursor.execute('SELECT * FROM facturas ORDER BY id_factura DESC')
     lista_facturas = cursor.fetchall()
     cursor.close()
@@ -224,6 +286,7 @@ def facturacion():
     return render_template('facturacion.html', lista_facturas=lista_facturas, form=form)
 
 @app.route('/facturacion/eliminar/<int:id>')
+@login_required
 def eliminar_factura(id):
     conn = get_connection()
     cursor = conn.cursor()

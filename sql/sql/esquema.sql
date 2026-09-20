@@ -79,3 +79,12 @@ INSERT INTO clientes (nombre, email, telefono, ciudad) VALUES
 INSERT INTO facturas (id_cliente, producto, cantidad, total, estado) VALUES
 (1, 'RTX 4060', 2, 700.00, 'Pagado'),
 (2, 'Ryzen 7 5800X', 1, 320.00, 'Pendiente');
+
+-- ============================================================
+-- TABLA: USUARIOS
+-- ============================================================
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="text-primary">Dashboard</h2>
+<div class="alert alert-success">
+    <h4>Bienvenido, {{ current_user.usuario }}</h4>
+    <p>Has iniciado sesión correctamente en el sistema.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <a href="{{ url_for('productos') }}" class="btn btn-primary w-100">Productos</a>
+    </div>
+    <div class="col-md-3 mb-3">
+        <a href="{{ url_for('clientes') }}" class="btn btn-primary w-100">Clientes</a>
+    </div>
+    <div class="col-md-3 mb-3">
+        <a href="{{ url_for('proveedores') }}" class="btn btn-primary w-100">Proveedores</a>
+    </div>
+    <div class="col-md-3 mb-3">
+        <a href="{{ url_for('facturacion') }}" class="btn btn-primary w-100">Facturación</a>
+    </div>
+</div>
+{% endblock %}

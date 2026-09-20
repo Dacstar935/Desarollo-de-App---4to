@@ -5,7 +5,7 @@
 <h2 class="text-primary">Facturación</h2>
 <p class="text-muted">Total: {{ lista_facturas|length }}</p>
 
-<!-- Mostrar mensajes flash -->
+<!-- Mensajes flash -->
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -88,7 +88,7 @@
         <tbody>
             {% for factura in lista_facturas %}
             <tr>
-                <td>{{ factura.id }}</td>
+                <td>{{ factura.id_factura }}</td>
                 <td>{{ factura.cliente }}</td>
                 <td>{{ factura.producto }}</td>
                 <td>{{ factura.cantidad }}</td>

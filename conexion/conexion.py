@@ -3,7 +3,7 @@ import mysql.connector
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'TU_PASSWORD_AQUI',   
+    'password': 'Sima.2025',   
     'database': 'tienda_db'
 }
 
