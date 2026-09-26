@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import psycopg2
+import psycopg2.extras
 from forms.producto_form import ProductoForm
 from forms.cliente_form import ClienteForm
 from forms.proveedor_form import ProveedorForm
@@ -24,7 +26,7 @@ login_manager.login_message = 'Debes iniciar sesión para acceder'
 @login_manager.user_loader
 def load_user(user_id):
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cursor.execute('SELECT * FROM usuarios WHERE id = %s', (user_id,))
     user = cursor.fetchone()
     cursor.close()
@@ -44,7 +46,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         cursor.execute('SELECT * FROM usuarios WHERE usuario = %s', (form.usuario.data,))
         user = cursor.fetchone()
         cursor.close()
@@ -68,7 +70,7 @@ def registro():
     form = UsuarioForm()
     if form.validate_on_submit():
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
         cursor.execute('SELECT * FROM usuarios WHERE usuario = %s', (form.usuario.data,))
         existe = cursor.fetchone()
@@ -124,7 +126,7 @@ def index():
 @login_required
 def productos():
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cursor.execute('''
         SELECT p.*, pr.nombre AS proveedor_nombre
         FROM productos p
@@ -158,7 +160,7 @@ def agregar_producto():
 @login_required
 def editar_producto(id):
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     if request.method == 'POST':
         form = ProductoForm()
         if form.validate_on_submit():
@@ -198,7 +200,7 @@ def eliminar_producto(id):
 def clientes():
     form = ClienteForm()
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     if form.validate_on_submit():
         cursor.execute('INSERT INTO clientes (nombre, email, telefono, ciudad) VALUES (%s, %s, %s, %s)',
                        (form.nombre.data, form.email.data, form.telefono.data, form.ciudad.data))
@@ -233,7 +235,7 @@ def eliminar_cliente(id):
 def proveedores():
     form = ProveedorForm()
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     if form.validate_on_submit():
         cursor.execute('INSERT INTO proveedores (nombre, producto, contacto, pais) VALUES (%s, %s, %s, %s)',
                        (form.nombre.data, form.producto.data, form.contacto.data, form.pais.data))
@@ -268,7 +270,7 @@ def eliminar_proveedor(id):
 def facturacion():
     form = FacturacionForm()
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     if form.validate_on_submit():
         cursor.execute('''
             INSERT INTO facturas (cliente, producto, cantidad, total, estado)

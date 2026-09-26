@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: tienda-dc
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: tienda-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: tienda-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: tienda-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: tienda-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: tienda-db
+          property: password
+
+databases:
+  - name: tienda-db
+    databaseName: tienda_db
+    user: tienda_user
