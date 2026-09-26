@@ -2,23 +2,33 @@ import psycopg2
 import psycopg2.extras
 import os
 
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'postgres',
-    'password': 'Sima.2026',
-    'database': 'tienda_db',
-    'port': '5432'
-}
+# ============================================================
+# CONFIGURACIÓN DE LA CONEXIÓN
+# ============================================================
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 def get_connection():
+    """Establece conexión con PostgreSQL (local o Render)"""
     try:
-        conn = psycopg2.connect(**DB_CONFIG)
+        if DATABASE_URL:
+            # Render (usa la URL completa)
+            conn = psycopg2.connect(DATABASE_URL)
+        else:
+            # Local (usa configuración manual)
+            conn = psycopg2.connect(
+                host='localhost',
+                user='postgres',
+                password='Sima.2026',
+                database='tienda_db',
+                port='5432'
+            )
         return conn
     except psycopg2.Error as e:
-        print(f"Error: {e}")
+        print(f"Error al conectar a PostgreSQL: {e}")
         return None
 
 def init_db():
+    """Crea las tablas si no existen"""
     conn = get_connection()
     if not conn:
         return
