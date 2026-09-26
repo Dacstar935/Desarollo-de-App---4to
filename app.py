@@ -35,7 +35,6 @@ def load_user(user_id):
         return Usuario(user['id'], user['usuario'], user['password'])
     return None
 
-# Inicializar base de datos
 init_db()
 
 # ============================================================
@@ -63,7 +62,7 @@ def login():
     return render_template('login.html', form=form)
 
 # ============================================================
-# REGISTRO DE USUARIOS
+# REGISTRO
 # ============================================================
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -71,16 +70,13 @@ def registro():
     if form.validate_on_submit():
         conn = get_connection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
         cursor.execute('SELECT * FROM usuarios WHERE usuario = %s', (form.usuario.data,))
         existe = cursor.fetchone()
-
         if existe:
             flash('El usuario ya existe', 'danger')
             cursor.close()
             conn.close()
             return render_template('registro.html', form=form)
-
         password_hash = generate_password_hash(form.password.data)
         cursor.execute('INSERT INTO usuarios (usuario, password) VALUES (%s, %s)',
                        (form.usuario.data, password_hash))
@@ -89,7 +85,6 @@ def registro():
         conn.close()
         flash('Usuario registrado exitosamente', 'success')
         return redirect(url_for('login'))
-
     return render_template('registro.html', form=form)
 
 # ============================================================
@@ -103,7 +98,7 @@ def logout():
     return redirect(url_for('login'))
 
 # ============================================================
-# DASHBOARD (protegido)
+# DASHBOARD
 # ============================================================
 @app.route('/dashboard')
 @login_required
@@ -120,7 +115,7 @@ def index():
     return render_template('index.html', nombre_tienda=nombre_tienda, anio=anio)
 
 # ============================================================
-# PRODUCTOS (protegido)
+# PRODUCTOS
 # ============================================================
 @app.route('/productos')
 @login_required
@@ -193,7 +188,7 @@ def eliminar_producto(id):
     return redirect(url_for('productos'))
 
 # ============================================================
-# CLIENTES (protegido)
+# CLIENTES
 # ============================================================
 @app.route('/clientes', methods=['GET', 'POST'])
 @login_required
@@ -228,7 +223,7 @@ def eliminar_cliente(id):
     return redirect(url_for('clientes'))
 
 # ============================================================
-# PROVEEDORES (protegido)
+# PROVEEDORES
 # ============================================================
 @app.route('/proveedores', methods=['GET', 'POST'])
 @login_required
@@ -263,7 +258,7 @@ def eliminar_proveedor(id):
     return redirect(url_for('proveedores'))
 
 # ============================================================
-# FACTURACION (protegido)
+# FACTURACION
 # ============================================================
 @app.route('/facturacion', methods=['GET', 'POST'])
 @login_required
@@ -298,39 +293,6 @@ def eliminar_factura(id):
     conn.close()
     flash('Factura eliminada', 'warning')
     return redirect(url_for('facturacion'))
-
-@app.route('/test-navbar')
-def test_navbar():
-    return '''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <a class="navbar-brand" href="#">Tienda DC</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navMenu">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Productos</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="container mt-4">
-            <h1>Test Navbar</h1>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-    </html>
-    '''
 
 # ============================================================
 # EJECUTAR
